@@ -20,6 +20,5 @@ class MoviesNotifier extends StateNotifier<List<Movie>> {
     currentPage++;
     final List<Movie> movies = await fetchMoreMovies(page: currentPage);
     state = [...state, ...movies];
-    //final List<Movie> movies = //todo getNowPlaying
   }
 }
