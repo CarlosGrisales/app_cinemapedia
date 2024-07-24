@@ -1,4 +1,5 @@
 import 'package:app_cinemapedia/presentation/screens/providers/providers.dart';
+import 'package:app_cinemapedia/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -29,13 +30,14 @@ class _HomeViewState extends ConsumerState<_HomeView> {
   @override
   Widget build(BuildContext context) {
     final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
-   // if (nowPlayingMovies.length == 0) return CircularProgressIndicator();
-    return ListView.builder(
-      itemCount: nowPlayingMovies.length,
-      itemBuilder: (BuildContext context, int index) {
-        final movie = nowPlayingMovies[index];
-        return ListTile(title: Text(movie.title));
-      },
+    // if (nowPlayingMovies.length == 0) return CircularProgressIndicator();
+    return Column(
+      children: [
+        const CustomAppbar(),
+        MovieHorizontalListview(movies: nowPlayingMovies,
+        title: 'RECOMMENDED FOR YOU',
+        subTitle: 'See all',)
+      ],
     );
   }
 }
