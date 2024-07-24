@@ -98,21 +98,10 @@ class _Slide extends StatelessWidget {
         Row(
           children: [
             Icon(
-              Icons.star,
-              color: Colors.yellow.shade800,
-            ),
-            Icon(
-              Icons.star,
-              color: Colors.yellow.shade800,
-            ),
-            Icon(
-              Icons.star,
-              color: Colors.yellow.shade800,
-            ),
-            Icon(
               Icons.star_half_outlined,
               color: Colors.yellow.shade800,
-            )
+            ),
+            Text(movie.voteCount.toString())
           ],
         ),
       ]),
