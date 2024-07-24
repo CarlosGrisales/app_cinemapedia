@@ -7,20 +7,24 @@ class CustomAppbar extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
     final titleStyle = Theme.of(context).textTheme.titleMedium;
-    return  SafeArea(
+    return SafeArea(
         child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 0),
       child: SizedBox(
+          height: double.infinity,
           width: double.infinity,
-          child: Row(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Icon(Icons.shield_moon_outlined),
-              const SizedBox(width: 5,),
-              Text('Cinemapedia', style: titleStyle),
+              const SizedBox(height: 30,),
+              const Text('Hello, what do you\nwant to watch ?',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold)),
               const Spacer(),
-              IconButton(onPressed: (){}, icon: const Icon(Icons.search))
-              ],
-            
+              IconButton(onPressed: () {}, icon: const Icon(Icons.search))
+            ],
           )),
     ));
   }
