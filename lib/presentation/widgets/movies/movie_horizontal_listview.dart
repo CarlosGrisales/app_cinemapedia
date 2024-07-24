@@ -101,7 +101,8 @@ class _Slide extends StatelessWidget {
               Icons.star_half_outlined,
               color: Colors.yellow.shade800,
             ),
-            Text(movie.voteCount.toString())
+            const SizedBox(width: 2,),
+            Text(movie.voteCount.toString(), style: TextStyle(color: Colors.yellow.shade800, fontWeight: FontWeight.bold),)
           ],
         ),
       ]),
