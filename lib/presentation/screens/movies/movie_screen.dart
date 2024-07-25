@@ -38,10 +38,10 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
       body: CustomScrollView(
         physics: const ClampingScrollPhysics(),
         slivers: [
-          _CustomSliverAppBar(movie: movie),
+          CustomSliverAppBar(movie: movie),
           SliverList(
             delegate: SliverChildBuilderDelegate(
-                (context, index) => _MovieDetails(movie: movie),
+                (context, index) => MovieDetails(movie: movie),
                 childCount: 1),
           )
         ],
@@ -50,10 +50,10 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
   }
 }
 
-class _MovieDetails extends StatelessWidget {
+class MovieDetails extends StatelessWidget {
   final Movie movie;
 
-  const _MovieDetails({required this.movie});
+  const MovieDetails({super.key, required this.movie});
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +102,7 @@ class _MovieDetails extends StatelessWidget {
             style: const TextStyle(color: Colors.white, fontSize: 14),
           ),
           const SizedBox(height: 20),
-          _ActorByMovie(movieId: movie.id.toString()),
+          ActorByMovie(movieId: movie.id.toString()),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
@@ -120,9 +120,9 @@ class _MovieDetails extends StatelessWidget {
   }
 }
 
-class _ActorByMovie extends ConsumerWidget {
+class ActorByMovie extends ConsumerWidget {
   final String movieId;
-  const _ActorByMovie({required this.movieId});
+  const ActorByMovie({super.key, required this.movieId});
 
   @override
   Widget build(BuildContext context, ref) {
@@ -227,17 +227,17 @@ class CustomRow extends StatelessWidget {
   }
 }
 
-class _CustomSliverAppBar extends StatelessWidget {
+class CustomSliverAppBar extends StatelessWidget {
   final Movie movie;
 
-  const _CustomSliverAppBar({required this.movie});
+  const CustomSliverAppBar({super.key, required this.movie});
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return SliverAppBar(
       actions: [
-        IconButton(onPressed: () {}, icon: Icon(Icons.favorite_border_rounded))
+        IconButton(onPressed: () {}, icon: const Icon(Icons.favorite_border_rounded))
       ],
       backgroundColor: Colors.black,
       expandedHeight: size.height * 0.4,
