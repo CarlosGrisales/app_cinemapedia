@@ -33,10 +33,75 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
       ));
     }
     return Scaffold(
+      backgroundColor: Colors.black87,
       body: CustomScrollView(
         physics: const ClampingScrollPhysics(),
         slivers: [
-          _CustomSliverAppBar(movie: movie)],
+          _CustomSliverAppBar(movie: movie),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+                (context, index) => _MovieDetails(movie: movie),
+                childCount: 1),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class _MovieDetails extends StatelessWidget {
+  final Movie movie;
+
+  const _MovieDetails({required this.movie});
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final textStyle = Theme.of(context).textTheme;
+
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              FilledButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.grey)),
+                onPressed: () {},
+                child: const Text('WHATCHE NOW'),
+              ),
+              const Spacer(),
+              Row(
+                children: [
+                  Icon(
+                    Icons.star_half_outlined,
+                    color: Colors.yellow.shade800,
+                  ),
+                  const SizedBox(
+                    width: 2,
+                  ),
+                  Text(
+                    movie.voteCount.toString(),
+                    style: TextStyle(
+                        color: Colors.yellow.shade800,
+                        fontWeight: FontWeight.bold),
+                  )
+                ],
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Text(
+            movie.overview,
+            style: TextStyle(color: Colors.white, fontSize: 14),
+          ),
+          const SizedBox(height: 100)
+        ],
       ),
     );
   }
@@ -51,8 +116,11 @@ class _CustomSliverAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return SliverAppBar(
+      actions: [
+        IconButton(onPressed: () {}, icon: Icon(Icons.favorite_border_rounded))
+      ],
       backgroundColor: Colors.black,
-      expandedHeight: size.height * 0.7,
+      expandedHeight: size.height * 0.4,
       foregroundColor: Colors.white,
       flexibleSpace: FlexibleSpaceBar(
         titlePadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -70,12 +138,27 @@ class _CustomSliverAppBar extends StatelessWidget {
               ),
             ),
             const SizedBox.expand(
-              child: DecoratedBox(decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  stops: [0.0,0.3],
-                  colors: [Colors.transparent, Colors.black87])
-              )),
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    stops: [0.7, 1.0],
+                    colors: [Colors.transparent, Colors.black87],
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox.expand(
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    stops: [0.0, 0.3],
+                    colors: [Colors.black87, Colors.transparent],
+                  ),
+                ),
+              ),
             )
           ],
         ),
