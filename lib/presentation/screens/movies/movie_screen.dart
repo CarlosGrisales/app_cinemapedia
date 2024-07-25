@@ -1,8 +1,10 @@
-import 'package:app_cinemapedia/presentation/screens/providers/movies/movie_info_providers.dart';
+
+import 'package:app_cinemapedia/domain/entities/actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../../../domain/entities/movie.dart';
+import '../providers/actors/actors_by_movie_provider.dart';
+import '../providers/movies/movie_info_providers.dart';
 
 class MovieScreen extends ConsumerStatefulWidget {
   static const name = 'movie-screen';
@@ -19,11 +21,13 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
   void initState() {
     super.initState();
     ref.read(movieInfoProvider.notifier).loadMovie(widget.movieId);
+    ref.read(actorByMovieProvider.notifier).loadActors(widget.movieId);
   }
 
   @override
   Widget build(BuildContext context) {
     final Movie? movie = ref.watch(movieInfoProvider)[widget.movieId];
+     final List<Actor>? actors = ref.watch(actorByMovieProvider)[widget.movieId];
     if (movie == null) {
       return const Scaffold(
           body: Center(
@@ -93,12 +97,12 @@ class _MovieDetails extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Text(
             movie.overview,
-            style: TextStyle(color: Colors.white, fontSize: 14),
+            style: const TextStyle(color: Colors.white, fontSize: 14),
           ),
           const SizedBox(height: 100)
         ],
