@@ -1,4 +1,5 @@
 import 'package:app_cinemapedia/presentation/screens/providers/providers.dart';
+import 'package:app_cinemapedia/presentation/screens/providers/theme_provider.dart';
 import 'package:app_cinemapedia/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -32,10 +33,10 @@ class _HomeViewState extends ConsumerState<_HomeView> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { 
     final initialLoadin = ref.watch(initialLoadingProvider);
     if (initialLoadin) return const FullScreenLoader();
-
+    final isDarkmode = ref.watch( themeNotifierProvider ).isDarkmode;
     final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
     final topRatedMovies = ref.watch(topRatedMoviesProvider);
     final popularMovies = ref.watch(popularMoviesProvider);
@@ -48,10 +49,13 @@ class _HomeViewState extends ConsumerState<_HomeView> {
           toolbarHeight: 160,
           leading: Column(
             children: [
-              IconButton(
-                icon: const Icon(Icons.shield_moon_outlined),
-                onPressed: () {},
-              ),
+               IconButton(
+            icon: Icon( isDarkmode ? Icons.dark_mode_outlined : Icons.light_mode_outlined ),
+            onPressed: () {
+              ref.read( themeNotifierProvider.notifier )
+                .toggleDarkmode();
+
+            })
             ],
           ),
           flexibleSpace: const FlexibleSpaceBar(

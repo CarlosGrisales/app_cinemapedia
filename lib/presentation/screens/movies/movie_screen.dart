@@ -1,4 +1,3 @@
-import 'package:app_cinemapedia/domain/entities/actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../domain/entities/movie.dart';
@@ -58,8 +57,8 @@ class _MovieDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final textStyle = Theme.of(context).textTheme;
+   /// final size = MediaQuery.of(context).size;
+    //final textStyle = Theme.of(context).textTheme;
 
     return Padding(
       padding: const EdgeInsets.all(15.0),
