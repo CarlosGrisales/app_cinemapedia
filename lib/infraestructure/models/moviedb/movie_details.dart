@@ -1,6 +1,3 @@
-// To parse this JSON data, do
-//
-//     final movieDetails = movieDetailsFromJson(jsonString);
 
 class MovieDetails {
     final bool adult;
