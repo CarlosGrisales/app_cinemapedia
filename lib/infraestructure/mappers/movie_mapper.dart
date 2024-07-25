@@ -17,6 +17,7 @@ class MovieMapper {
       posterPath: (moviedb.posterPath != '')
           ? 'https://image.tmdb.org/t/p/w500${moviedb.posterPath}'
           : 'no-poster',
+      productionCompanies: moviedb.genreIds.map((e) => e.toString()).toList(),
       releaseDate: moviedb.releaseDate,
       title: moviedb.title,
       video: moviedb.video,
@@ -37,6 +38,7 @@ class MovieMapper {
       posterPath: (moviedb.posterPath != '')
           ? 'https://image.tmdb.org/t/p/w500${moviedb.posterPath}'
           : 'no-poster',
+      productionCompanies: moviedb.productionCompanies.map((e) => e.name).toList(),
       releaseDate: moviedb.releaseDate,
       title: moviedb.title,
       video: moviedb.video,

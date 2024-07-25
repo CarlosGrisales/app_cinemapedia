@@ -1,4 +1,3 @@
-
 import 'package:app_cinemapedia/domain/entities/actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -27,7 +26,6 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
   @override
   Widget build(BuildContext context) {
     final Movie? movie = ref.watch(movieInfoProvider)[widget.movieId];
-     final List<Actor>? actors = ref.watch(actorByMovieProvider)[widget.movieId];
     if (movie == null) {
       return const Scaffold(
           body: Center(
@@ -104,9 +102,128 @@ class _MovieDetails extends StatelessWidget {
             movie.overview,
             style: const TextStyle(color: Colors.white, fontSize: 14),
           ),
-          const SizedBox(height: 100)
+          const SizedBox(height: 20),
+          _ActorByMovie(movieId: movie.id.toString()),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomRow(title: 'Studio', subtitle: movie.productionCompanies,),
+                CustomRow(title: 'Genero', subtitle: movie.genreIds,),
+                CustomRow(title: 'Release', subtitle: movie.releaseDate.toString())
+              ],
+            ),
+          )
         ],
       ),
+    );
+  }
+}
+
+class _ActorByMovie extends ConsumerWidget {
+  final String movieId;
+  const _ActorByMovie({required this.movieId});
+
+  @override
+  Widget build(BuildContext context, ref) {
+    final actorsByMovie = ref.watch(actorByMovieProvider);
+
+    if (actorsByMovie[movieId] == null) {
+      return const CircularProgressIndicator(
+        strokeWidth: 2,
+      );
+    }
+    final actors = actorsByMovie[movieId]!;
+
+    return SizedBox(
+      height: 200,
+      child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: actors.length,
+          itemBuilder: (context, index) {
+            final actor = actors[index];
+
+            return Container(
+              padding: const EdgeInsets.all(8.0),
+              width: 135,
+              child: Column(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(80),
+                    child: Image.network(
+                      actor.profilePath,
+                      height: 120,
+                      width: 120,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  Text(
+                    actor.name,
+                    maxLines: 2,
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                ],
+              ),
+            );
+          }),
+    );
+  }
+}
+
+class CustomRow extends StatelessWidget {
+  final String title;
+  final dynamic subtitle;
+
+  const CustomRow({
+    Key? key,
+    required this.title,
+    required this.subtitle,
+  }) : super(key: key);
+
+  String formatSubtitle(dynamic subtitle) {
+    if (subtitle is List<String>) {
+      return subtitle.join(', ');
+    } else if (subtitle is String) {
+      return subtitle;
+    } else {
+      throw ArgumentError('Subtitle must be a String or List<String>');
+    }
+  }
+
+  String extractYear(String date) {
+    return date.split('-').first;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+              color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(
+          width: 5,
+        ),
+        Flexible(
+          child: Padding(
+            padding: const EdgeInsets.all(8),
+            child: Text(
+                formatSubtitle(subtitle is String ? extractYear(subtitle) : subtitle),
+              style: const TextStyle(
+                fontSize: 14,
+                color: Colors.white54,
+              ),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
