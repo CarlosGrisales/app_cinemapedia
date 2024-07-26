@@ -4,6 +4,27 @@ import '../../../domain/entities/movie.dart';
 import '../providers/actors/actors_by_movie_provider.dart';
 import '../providers/movies/movie_info_providers.dart';
 
+/// **Pantalla de Película individual (`MovieScreen`).**
+///
+/// Esta pantalla muestra la información detallada de una película, incluyendo su título, descripción,
+/// actores y otros detalles relevantes.
+///
+/// **Propiedades:**
+/// - `movieId`: Identificador de la película que se va a mostrar.
+///
+/// **Métodos:**
+/// - `createState`: Crea el estado asociado con esta pantalla.
+///
+/// **Atributos del Estado:**
+/// - `initState`: Método llamado al inicializar el estado para cargar la información de la película y los actores.
+/// - `build`: Construye la interfaz de usuario de la pantalla.
+///
+/// **Widget Adicionales Utilizados:**
+/// - `CustomSliverAppBar`: Widget personalizado que muestra una barra de aplicaciones con la imagen de fondo de la película.
+/// - `MovieDetails`: Widget que muestra los detalles de la película.
+/// - `ActorByMovie`: Widget que muestra una lista horizontal de actores para una película.
+
+
 class MovieScreen extends ConsumerStatefulWidget {
   static const name = 'movie-screen';
   final String movieId;
@@ -49,6 +70,18 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
     );
   }
 }
+
+/// **Detalles de la Película (`MovieDetails`).**
+///
+/// Este widget muestra información detallada sobre una película específica, incluyendo
+/// una breve descripción, el botón para ver ahora, la puntuación, y otros detalles específicos.
+///
+/// **Propiedades:**
+/// - `movie`: La película cuyas detalles se mostrarán.
+///
+/// **Métodos:**
+/// - `build`: Construye la interfaz de usuario para mostrar los detalles de la película.
+
 
 class MovieDetails extends StatelessWidget {
   final Movie movie;
@@ -120,6 +153,16 @@ class MovieDetails extends StatelessWidget {
   }
 }
 
+/// **Actores por Película (`ActorByMovie`).**
+///
+/// Este widget muestra una lista horizontal de actores que aparecen en una película específica.
+///
+/// **Propiedades:**
+/// - `movieId`: Identificador de la película cuyas actores se van a mostrar.
+///
+/// **Métodos:**
+/// - `build`: Construye la interfaz de usuario para mostrar la lista de actores.
+/// 
 class ActorByMovie extends ConsumerWidget {
   final String movieId;
   const ActorByMovie({super.key, required this.movieId});
@@ -170,6 +213,19 @@ class ActorByMovie extends ConsumerWidget {
     );
   }
 }
+
+/// **Fila Personalizada (`CustomRow`).**
+///
+/// Este widget muestra una fila de información de descripcion de la pelicula con un título y un subtítulo.
+///
+/// **Propiedades:**
+/// - `title`: Título de la información.
+/// - `subtitle`: Subtítulo de la información, que puede ser una cadena o una lista de cadenas.
+///
+/// **Métodos:**
+/// - `formatSubtitle`: Formatea el subtítulo basado en su tipo.
+/// - `extractYear`: Extrae el año de una fecha en formato de cadena.
+/// - `build`: Construye la interfaz de usuario para mostrar la fila de información.
 
 class CustomRow extends StatelessWidget {
   final String title;
@@ -226,6 +282,16 @@ class CustomRow extends StatelessWidget {
     );
   }
 }
+
+/// **Barra de Aplicaciones Personalizada (`CustomSliverAppBar`).**
+///
+/// Este widget muestra una barra de aplicaciones personalizada con una imagen de fondo de la película.
+///
+/// **Propiedades:**
+/// - `movie`: La película cuyas detalles se mostrarán en la barra de aplicaciones.
+///
+/// **Métodos:**
+/// - `build`: Construye la interfaz de usuario para mostrar la barra de aplicaciones.
 
 class CustomSliverAppBar extends StatelessWidget {
   final Movie movie;

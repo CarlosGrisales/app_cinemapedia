@@ -3,6 +3,23 @@ import 'package:app_cinemapedia/domain/entities/movie.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+/// **Lista Horizontal de Películas (`MovieHorizontalListview`).**
+///
+/// Este widget muestra una lista horizontal de películas. También incluye un título y un subtítulo opcionales.
+///
+/// **Propiedades:**
+/// - `movies`: Lista de objetos de tipo `Movie` que se mostrarán.
+/// - `title`: Título opcional de la lista.
+/// - `subTitle`: Subtítulo opcional de la lista.
+/// - `loadNextPage`: Callback opcional para cargar la siguiente página de películas.
+///
+/// **Métodos:**
+/// - `build`: Construye la interfaz de usuario de la lista horizontal de películas.
+///
+/// **Clases Internas:**
+/// - `_Slide`: Widget que representa una película individual en la lista.
+/// - `_Title`: Widget que muestra el título y el subtítulo de la lista.
+
 class MovieHorizontalListview extends StatelessWidget {
   final List<Movie> movies;
   final String? title;
@@ -43,6 +60,16 @@ class MovieHorizontalListview extends StatelessWidget {
   }
 }
 
+/// **Slide de Película (`_Slide`).**
+///
+/// Widget interno que representa una película individual en la lista horizontal.
+///
+/// **Propiedades:**
+/// - `movie`: Objeto de tipo `Movie` que representa la película a mostrar.
+///
+/// **Métodos:**
+/// - `build`: Construye la interfaz de usuario para una película individual.
+
 class _Slide extends StatelessWidget {
   final Movie movie;
   const _Slide({required this.movie});
@@ -51,9 +78,9 @@ class _Slide extends StatelessWidget {
   Widget build(BuildContext context) {
     final textStyle = Theme.of(context).textTheme;
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 8),
+      margin: const EdgeInsets.symmetric(horizontal: 8),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        //* imagen
+        //* Imagen
         SizedBox(
           width: 150,
           child: ClipRRect(
@@ -84,7 +111,7 @@ class _Slide extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 5),
-        //* Title
+        //* Título
         SizedBox(
           width: 150,
           child: Text(
@@ -109,6 +136,17 @@ class _Slide extends StatelessWidget {
     );
   }
 }
+
+/// **Título de la Lista (`_Title`).**
+///
+/// Widget interno que muestra el título y el subtítulo de la lista de películas.
+///
+/// **Propiedades:**
+/// - `title`: Título opcional de la lista.
+/// - `subTitle`: Subtítulo opcional de la lista.
+///
+/// **Métodos:**
+/// - `build`: Construye la interfaz de usuario para el título y subtítulo de la lista.
 
 class _Title extends StatelessWidget {
   final String? title;
