@@ -1,5 +1,4 @@
 import 'package:app_cinemapedia/presentation/screens/providers/providers.dart';
-import 'package:app_cinemapedia/presentation/screens/providers/theme_provider.dart';
 import 'package:app_cinemapedia/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -77,27 +76,24 @@ class _HomeViewState extends ConsumerState<_HomeView> {
   Widget build(BuildContext context) { 
     final initialLoadin = ref.watch(initialLoadingProvider);
     if (initialLoadin) return const FullScreenLoader();
-    final isDarkmode = ref.watch( themeNotifierProvider ).isDarkmode;
     final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
     final topRatedMovies = ref.watch(topRatedMoviesProvider);
     final popularMovies = ref.watch(popularMoviesProvider);
     final upcomingMovies = ref.watch(upcomingMoviesProvider);
+    final colors = Theme.of(context).colorScheme;
     
     return CustomScrollView(slivers: [
       SliverAppBar(
           backgroundColor: const Color.fromARGB(255, 2, 87, 133),
           floating: true,
-          toolbarHeight: 160,
-          leading: Column(
-            children: [
-               IconButton(
-            icon: Icon( isDarkmode ? Icons.dark_mode_outlined : Icons.light_mode_outlined ),
-            onPressed: () {
-              ref.read( themeNotifierProvider.notifier )
-                .toggleDarkmode();
-
-            })
-            ],
+          toolbarHeight: 70,
+          leading: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Column(
+              children: [
+                 Icon( Icons.movie_outlined, color: colors.primary ),
+              ],
+            ),
           ),
           flexibleSpace: const FlexibleSpaceBar(
             title: CustomAppbar(),

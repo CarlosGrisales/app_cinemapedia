@@ -48,14 +48,31 @@ class MoviedbDatasource extends MoviesDatasources {
     return _jsonToMovies(response.data);
   }
 
+  
   @override
-  Future<Movie> getMovieById(String id) async {
-    final response = await dio.get('/movie/$id');
-    if (response.statusCode != 200)
-      throw Exception('Movie with id: $id no found');
+  Future<Movie> getMovieById( String id ) async {
 
-    final movieDetails = MovieDetails.fromJson(response.data);
+    final response = await dio.get('/movie/$id');
+    if ( response.statusCode != 200 ) throw Exception('Movie with id: $id not found');
+    
+    final movieDetails = MovieDetails.fromJson( response.data );
     final Movie movie = MovieMapper.movieDetailsToEntity(movieDetails);
-    return  movie;
+    return movie;
   }
+  
+  @override
+  Future<List<Movie>> searchMovies(String query) async{
+
+    if ( query.isEmpty ) return [];
+
+    final response = await dio.get('/search/movie', 
+      queryParameters: {
+        'query': query
+      }
+    );
+
+    return _jsonToMovies(response.data);    
+  }
+
+
 }
