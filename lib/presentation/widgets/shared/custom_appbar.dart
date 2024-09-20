@@ -10,6 +10,7 @@ class CustomAppbar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+     final colors = Theme.of(context).colorScheme;
     final titleStyle = Theme.of(context).textTheme.titleMedium;
 
     return SafeArea(
@@ -20,6 +21,8 @@ class CustomAppbar extends ConsumerWidget {
           width: double.infinity,
           child: Row(
             children: [
+               Icon( Icons.movie_outlined, color: colors.primary ),
+              const SizedBox( width: 5 ),
               Text('Cinemapedia', style: titleStyle ),
       
               const Spacer(),
@@ -39,7 +42,7 @@ class CustomAppbar extends ConsumerWidget {
                 ).then((movie) {
                   if ( movie == null ) return;
 
-                  context.push('/movie/${ movie.id }');
+                  context.push('/home/0/movie/${ movie.id }');
                 });
 
               }, 

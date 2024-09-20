@@ -30,6 +30,8 @@ environment:
 dependencies:
   animate_do: ^3.3.4
   cupertino_icons: ^1.0.2
+  card_swiper: ^2.0.4
+  intl: ^0.18.0
   dio: ^5.5.0+1
   flutter:
     sdk: flutter
