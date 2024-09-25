@@ -24,6 +24,11 @@
 2. **Configurar el entorno:**
    - Copia el archivo `.env.template` y renómbralo a `.env`.
    - Cambia las variables de entorno con tus credenciales de TMDb.
+   - cambios en la entidad, tienes que ejecutar el comando
+   ```
+   flutter pub run build_runner build
+   ```
+
 
 3. **Obtener el código fuente:**
    - Clona o descarga este repositorio en tu máquina local.

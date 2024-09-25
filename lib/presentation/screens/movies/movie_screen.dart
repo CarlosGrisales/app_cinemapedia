@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../domain/entities/movie.dart';
-import '../providers/actors/actors_by_movie_provider.dart';
-import '../providers/movies/movie_info_providers.dart';
+import '../providers/providers.dart';
 
 /// **Pantalla de Película individual (`MovieScreen`).**
 ///
@@ -23,7 +22,6 @@ import '../providers/movies/movie_info_providers.dart';
 /// - `CustomSliverAppBar`: Widget personalizado que muestra una barra de aplicaciones con la imagen de fondo de la película.
 /// - `MovieDetails`: Widget que muestra los detalles de la película.
 /// - `ActorByMovie`: Widget que muestra una lista horizontal de actores para una película.
-
 
 class MovieScreen extends ConsumerStatefulWidget {
   static const name = 'movie-screen';
@@ -82,7 +80,6 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
 /// **Métodos:**
 /// - `build`: Construye la interfaz de usuario para mostrar los detalles de la película.
 
-
 class MovieDetails extends StatelessWidget {
   final Movie movie;
 
@@ -90,7 +87,7 @@ class MovieDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   /// final size = MediaQuery.of(context).size;
+    /// final size = MediaQuery.of(context).size;
     //final textStyle = Theme.of(context).textTheme;
 
     return Padding(
@@ -141,9 +138,16 @@ class MovieDetails extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomRow(title: 'Studio', subtitle: movie.productionCompanies,),
-                CustomRow(title: 'Genero', subtitle: movie.genreIds,),
-                CustomRow(title: 'Release', subtitle: movie.releaseDate.toString())
+                CustomRow(
+                  title: 'Studio',
+                  subtitle: movie.productionCompanies,
+                ),
+                CustomRow(
+                  title: 'Genero',
+                  subtitle: movie.genreIds,
+                ),
+                CustomRow(
+                    title: 'Release', subtitle: movie.releaseDate.toString())
               ],
             ),
           )
@@ -162,7 +166,7 @@ class MovieDetails extends StatelessWidget {
 ///
 /// **Métodos:**
 /// - `build`: Construye la interfaz de usuario para mostrar la lista de actores.
-/// 
+///
 class ActorByMovie extends ConsumerWidget {
   final String movieId;
   const ActorByMovie({super.key, required this.movieId});
@@ -258,8 +262,8 @@ class CustomRow extends StatelessWidget {
       children: [
         Text(
           title,
-          style: const TextStyle(
-              color: Colors.white, fontWeight: FontWeight.bold),
+          style:
+              const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         const SizedBox(
           width: 5,
@@ -268,7 +272,8 @@ class CustomRow extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(8),
             child: Text(
-                formatSubtitle(subtitle is String ? extractYear(subtitle) : subtitle),
+              formatSubtitle(
+                  subtitle is String ? extractYear(subtitle) : subtitle),
               style: const TextStyle(
                 fontSize: 14,
                 color: Colors.white54,
@@ -293,17 +298,21 @@ class CustomRow extends StatelessWidget {
 /// **Métodos:**
 /// - `build`: Construye la interfaz de usuario para mostrar la barra de aplicaciones.
 
-class CustomSliverAppBar extends StatelessWidget {
+class CustomSliverAppBar extends ConsumerWidget {
   final Movie movie;
 
   const CustomSliverAppBar({super.key, required this.movie});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final size = MediaQuery.of(context).size;
     return SliverAppBar(
       actions: [
-        IconButton(onPressed: () {}, icon: const Icon(Icons.favorite_border_rounded))
+        IconButton(
+            onPressed: () {
+              ref.watch(localStorageRepositoryProvider).toggleFavorite(movie);
+            },
+            icon: const Icon(Icons.favorite_border_rounded))
       ],
       backgroundColor: Colors.black,
       expandedHeight: size.height * 0.4,
@@ -323,30 +332,55 @@ class CustomSliverAppBar extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
-            const SizedBox.expand(
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    stops: [0.7, 1.0],
-                    colors: [Colors.transparent, Colors.black87],
-                  ),
-                ),
-              ),
+            const _CustomGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              stops: [0.0, 0.2],
+              colors: [
+                Colors.black87,
+                Colors.transparent,
+              ],
             ),
-            const SizedBox.expand(
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    stops: [0.0, 0.3],
-                    colors: [Colors.black87, Colors.transparent],
-                  ),
-                ),
-              ),
-            )
+            const _CustomGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              stops: [0.7, 1.0],
+              colors: [
+                Colors.transparent,
+                Colors.black87,
+              ],
+            ),
+            const _CustomGradient(
+              begin: Alignment.topLeft,
+              stops: [0.0, 0.3],
+              colors: [Colors.black87, Colors.transparent],
+            ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _CustomGradient extends StatelessWidget {
+  final AlignmentGeometry begin;
+  final AlignmentGeometry end;
+  final List<double> stops;
+  final List<Color> colors;
+
+  const _CustomGradient(
+      {this.begin = Alignment.centerLeft,
+      this.end = Alignment.centerRight,
+      required this.stops,
+      required this.colors});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox.expand(
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: begin, end: end, stops: stops, colors: colors),
         ),
       ),
     );
