@@ -297,6 +297,12 @@ class CustomRow extends StatelessWidget {
 ///
 /// **Métodos:**
 /// - `build`: Construye la interfaz de usuario para mostrar la barra de aplicaciones.
+///
+final isFavoriteProvider =
+    FutureProvider.family.autoDispose((ref, int movieId) {
+  final localStorageReposy = ref.watch(localStorageRepositoryProvider);
+  return localStorageReposy.isMovieFavorite(movieId);
+});
 
 class CustomSliverAppBar extends ConsumerWidget {
   final Movie movie;
@@ -305,14 +311,24 @@ class CustomSliverAppBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isFavoriteFuture = ref.watch(isFavoriteProvider(movie.id));
     final size = MediaQuery.of(context).size;
     return SliverAppBar(
       actions: [
         IconButton(
             onPressed: () {
               ref.watch(localStorageRepositoryProvider).toggleFavorite(movie);
+              ref.invalidate(isFavoriteProvider(movie.id));
             },
-            icon: const Icon(Icons.favorite_border_rounded))
+            icon: isFavoriteFuture.when(
+                loading: () => const CircularProgressIndicator(strokeWidth: 2),
+                data: (isFavorite) => isFavorite
+                    ? const Icon(
+                        Icons.favorite_rounded,
+                        color: Colors.red,
+                      )
+                    : const Icon(Icons.favorite_border_rounded),
+                error: (_, __) => throw UnimplementedError()))
       ],
       backgroundColor: Colors.black,
       expandedHeight: size.height * 0.4,
